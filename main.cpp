@@ -51,12 +51,10 @@ void MinHeap::insertKey(int k)
         cout << "\nOverflow: Could not insertKey\n";
         return;
     }
-
     // First insert the new key at the end
     heap_size++;
     int i = heap_size - 1;
     harr[i] = k;
-
     // Fix the min heap property if it is violated
     while (i != 0 && harr[parent(i)] > harr[i])
     {
@@ -87,16 +85,13 @@ int MinHeap::extractMin()
         heap_size--;
         return harr[0];
     }
-
     // Store the minimum value, and remove it from heap
     int root = harr[0];
     harr[0] = harr[heap_size-1];
     heap_size--;
     MinHeapify(0);
-
     return root;
 }
-
 
 // This function deletes key at index i. It first reduced value to minus
 // infinite, then calls extractMin()
@@ -124,6 +119,21 @@ void MinHeap::MinHeapify(int i)
     }
 }
 
+int * heap_sort(int * arr , int n)
+{
+    MinHeap h(n);
+    for (int j = 0; j < n ; j++) {
+        h.insertKey(arr[j]);
+    }
+    int bro=0,c=0;
+    while(bro!=INT_MAX)
+    {
+        bro=arr[c]=h.extractMin();
+        c++;
+    }
+    return arr;
+}
+
 // A utility function to swap two elements
 void swap(int *x, int *y)
 {
@@ -132,38 +142,7 @@ void swap(int *x, int *y)
     *y = temp;
 }
 
-
-
-int main() {
-
-
-
-    int min=1,max=1000,n=20;
-    int * dataset= generate_dataset(min,max,n);
-    MinHeap h(n);
-    for (int j = 0; j < n ; j++) {
-        h.insertKey(dataset[j]);
-    }
-
-    int sorted[n],bro=0,c=0;
-
-    while(bro!=INT_MAX)
-    {
-        bro=sorted[c]=h.extractMin();
-        c++;
-    }
-
-    for (int i = 0; i <c - 1; i++) {
-        cout<<sorted[i]<<endl;
-
-    }
-
-
-
-    return 0;
-}
-
-
+// A utility function to generate dataset
 int * generate_dataset (int min , int max ,int n)   // n is the size of the dataset
 {
     int *dataset = (int *)malloc(sizeof(int)*n)  , data ;
@@ -172,4 +151,18 @@ int * generate_dataset (int min , int max ,int n)   // n is the size of the data
         dataset[i]=data;                            //add to the array
     }
     return dataset;
+}
+
+int main() {
+
+    /* Generate dataset*/
+    int min=1,max=1000,n=20;
+    int * dataset= generate_dataset(min,max,n);
+        /* Sort */
+    dataset=heap_sort(dataset , n );
+       /* Print */
+    for (int i = 0; i <n - 1; i++) {
+        cout<<dataset[i]<<endl;
+    }
+    return 0;
 }
